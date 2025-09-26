@@ -2,25 +2,23 @@
 
 import { useState } from "react";
 import { DietForm } from "./_components/diet-form";
-
-interface DietData {
-  nome: string;
-  idade: number;
-  altura_cm: number;
-  peso_kg: number;
-  sexo: "masculino" | "feminino";
-  nivel_atividade: "sedentario" | "2x_semana" | "4x_semana";
-  objetivo: "perda_de_peso" | "hipertrofia" | "manter_massa_muscular";
-}
+import { DietGenerator } from "./_components/diet-generator";
+import { DietData } from "@/types/diet-data.type";
 
 export default function Home() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<DietData | null>(null);
 
-  function handleSubmit(data: DietData){
-    console.log(data);
+  function handleSubmit(userInfo: DietData) {
+    setData(userInfo);
   }
 
   return (
-    <DietForm onSubmit={handleSubmit} />
+    <>
+      {!data ? (
+        <DietForm onSubmit={handleSubmit} />
+      ) : (
+        <DietGenerator data={data} />
+      )}
+    </>
   );
 }
